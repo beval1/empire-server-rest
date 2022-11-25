@@ -16,4 +16,6 @@ public final class AppConstants {
             "http://reddit-clone-react1.herokuapp.com",
             "https://reddit-clone-react1.herokuapp.com"
     );
+    public static final int MAXIMUM_USERNAME_LENGTH = 20;
+    public static final int MINIMUM_USERNAME_LENGTH = 5;
 }

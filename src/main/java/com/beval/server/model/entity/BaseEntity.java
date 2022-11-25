@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Entity
+//@Entity
 //@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @MappedSuperclass
 public abstract class BaseEntity {
