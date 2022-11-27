@@ -1,6 +1,6 @@
 package com.beval.server.api.v1;
 
-import com.beval.server.dto.payload.SigninDTO;
+import com.beval.server.dto.payload.SignInDTO;
 import com.beval.server.dto.payload.SignupDTO;
 import com.beval.server.dto.response.JwtResponseDTO;
 import com.beval.server.dto.response.ResponseDTO;
@@ -27,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody SigninDTO signinDto) {
+    public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody SignInDTO signinDto) {
 
         String token = authService.signInUser(signinDto);
 

@@ -1,6 +1,6 @@
 package com.beval.server.service.impl;
 
-import com.beval.server.dto.payload.SigninDTO;
+import com.beval.server.dto.payload.SignInDTO;
 import com.beval.server.dto.payload.SignupDTO;
 import com.beval.server.exception.RoleNotFoundException;
 import com.beval.server.exception.UserAlreadyExistsException;
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String signInUser(SigninDTO signinDto) {
+    public String signInUser(SignInDTO signinDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 signinDto.getUsernameOrEmail(), signinDto.getPassword()));
 
