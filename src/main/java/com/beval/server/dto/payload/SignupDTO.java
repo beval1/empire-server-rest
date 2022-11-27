@@ -1,6 +1,7 @@
 package com.beval.server.dto.payload;
 
 import com.beval.server.utils.validators.EmailValidator;
+import com.beval.server.utils.validators.UserUsernameValidator;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Builder
 public class SignupDTO {
     @NotBlank
+    @UserUsernameValidator
     private String username;
     @EmailValidator
     private String email;

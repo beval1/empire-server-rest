@@ -57,6 +57,7 @@ public class AuthController {
                                 .builder()
                                 .message("Signed up successfully!")
                                 .content(null)
+                                .status(HttpStatus.OK.value())
                                 .build()
                 );
     }
