@@ -41,6 +41,7 @@ public class AuthController {
                                         .builder()
                                         .accessToken(token)
                                         .tokenType("Bearer").build())
+                                .status(HttpStatus.OK.value())
                                 .build()
                 );
     }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,6 +26,20 @@ public class GlobalExceptionHandler {
                         .message(ex.getMessage())
                         .content(null)
                         .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> handleInvalidPayload(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ResponseDTO
+                        .builder()
+                        .message("Invalid payload!")
+                        .content(null)
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
                         .build()
         );
     }
@@ -38,6 +53,7 @@ public class GlobalExceptionHandler {
                                 .builder()
                                 .message(ex.getMessage())
                                 .content(null)
+                                .status(ex.getStatus().value())
                                 .build()
                 );
     }
@@ -50,6 +66,7 @@ public class GlobalExceptionHandler {
                         ResponseDTO
                                 .builder()
                                 .message(ex.getMessage())
+                                .status(HttpStatus.FORBIDDEN.value())
                                 .content(null)
                                 .build()
                 );

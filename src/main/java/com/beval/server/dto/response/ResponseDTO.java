@@ -16,5 +16,5 @@ public class ResponseDTO {
     private Object content;
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
-
+    private int status;
 }
