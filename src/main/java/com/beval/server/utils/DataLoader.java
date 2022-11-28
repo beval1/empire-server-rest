@@ -1,15 +1,16 @@
 package com.beval.server.utils;
 
-import com.beval.server.model.entity.*;
+import com.beval.server.model.entity.RoleEntity;
+import com.beval.server.model.entity.UserEntity;
 import com.beval.server.model.enums.RoleEnum;
-import com.beval.server.repository.*;
+import com.beval.server.repository.RoleRepository;
+import com.beval.server.repository.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component

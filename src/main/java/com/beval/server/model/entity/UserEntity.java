@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -33,6 +32,10 @@ public class UserEntity extends BaseEntity {
     private boolean accountExpired = false;
     @Builder.Default
     private boolean credentialsExpired = false;
+    private int level;
+    private int mightyPoints;
+    private int coins;
+    private int rubies;
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
