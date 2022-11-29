@@ -4,7 +4,6 @@ import com.beval.server.security.JwtAuthenticationEntryPoint;
 import com.beval.server.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -49,11 +48,11 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/subreddits/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/comments/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/users/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/get-feed").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/v1/subreddits/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/v1/posts/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/v1/comments/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/v1/users/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/v1/get-feed").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

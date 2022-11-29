@@ -1,16 +1,15 @@
 package com.beval.server.utils;
 
-import com.beval.server.model.entity.RoleEntity;
-import com.beval.server.model.entity.UserEntity;
+import com.beval.server.model.entity.*;
 import com.beval.server.model.enums.RoleEnum;
-import com.beval.server.repository.RoleRepository;
-import com.beval.server.repository.UserRepository;
+import com.beval.server.repository.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -18,10 +17,18 @@ import java.util.Set;
 public class DataLoader implements ApplicationRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final BuildingTypeRepository buildingRepository;
+    private final BuildingEntityRepository buildingEntityLevelRepository;
+    private final CastleRepository castleRepository;
+    private final CastleBuildingRepository castleBuildingRepository;
 
-    public DataLoader(UserRepository userRepository, RoleRepository roleRepository) {
+    public DataLoader(UserRepository userRepository, RoleRepository roleRepository, BuildingTypeRepository buildingRepository, BuildingEntityRepository buildingEntityLevelRepository, CastleRepository castleRepository, CastleBuildingRepository castleBuildingRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.buildingRepository = buildingRepository;
+        this.buildingEntityLevelRepository = buildingEntityLevelRepository;
+        this.castleRepository = castleRepository;
+        this.castleBuildingRepository = castleBuildingRepository;
     }
 
     @Transactional
@@ -69,6 +76,34 @@ public class DataLoader implements ApplicationRunner {
                             .email("admin@admin.com")
                             .build()
             );
+
+            //TODO: add building image; save building position
+            BuildingType barracks = buildingRepository.save(BuildingType
+                    .builder()
+                    .buildingName("Barracks")
+                    .build());
+            BuildingEntity barracksLevel1 = buildingEntityLevelRepository.save(BuildingEntity
+                    .builder()
+                    .level(1)
+                    .unlocksOnLevel(0)
+                    .buildingType(barracks)
+                    .buildingTimeSeconds(3600)
+                    .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669670047/empire/buildings/barracks/barracks_level_1-removebg_wq1oxr.png")
+                    .woodRequired(0)
+                    .stoneRequired(1)
+                    .build());
+
+            CastleBuilding castleBarracksLevel1 = castleBuildingRepository.save(
+                    CastleBuilding.builder()
+                            .buildingEntity(barracksLevel1)
+                    .coordinateX(10).coordinateY(20).build());
+
+            CastleEntity castleEntity = castleRepository.save(CastleEntity.builder()
+                    .castleName("beval")
+                    .buildings(List.of(castleBarracksLevel1))
+                    .build());
+
+            user.setCastle(castleEntity);
         }
     }
 }

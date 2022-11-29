@@ -36,6 +36,8 @@ public class UserEntity extends BaseEntity {
     private int mightyPoints;
     private int coins;
     private int rubies;
+    @OneToOne
+    private CastleEntity castle;
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
