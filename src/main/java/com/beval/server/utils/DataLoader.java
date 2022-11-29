@@ -96,11 +96,13 @@ public class DataLoader implements ApplicationRunner {
             CastleBuilding castleBarracksLevel1 = castleBuildingRepository.save(
                     CastleBuilding.builder()
                             .buildingEntity(barracksLevel1)
-                    .coordinateX(10).coordinateY(20).build());
+                    .coordinateX(15).coordinateY(10).build());
 
             CastleEntity castleEntity = castleRepository.save(CastleEntity.builder()
                     .castleName("beval")
                     .buildings(List.of(castleBarracksLevel1))
+                            .coordinateX(10)
+                            .coordinateY(10)
                     .build());
 
             user.setCastle(castleEntity);

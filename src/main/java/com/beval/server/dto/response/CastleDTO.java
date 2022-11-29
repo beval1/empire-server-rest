@@ -12,4 +12,6 @@ import java.util.List;
 public class CastleDTO {
     private String castleName;
     private List<CastleBuildingDTO> buildings;
+    private int coordinateX;
+    private int coordinateY;
 }
