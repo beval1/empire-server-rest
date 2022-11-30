@@ -20,6 +20,11 @@ public class CastleEntity extends BaseEntity{
     private String castleName;
     @ManyToMany
     private List<CastleBuilding> buildings;
+    private int wood;
+    private int stone;
+    private int food;
+    private int army;
+    private int citizens;
     private int coordinateX;
     private int coordinateY;
 }

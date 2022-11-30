@@ -14,4 +14,7 @@ import javax.persistence.Table;
 @Table(name="building_type")
 public class BuildingType extends BaseEntity {
     private String buildingName;
+    private int castleLimit;
+    @Builder.Default
+    private boolean buildable = true;
 }

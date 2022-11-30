@@ -22,4 +22,6 @@ public class BuildingEntity extends BaseEntity{
     private int stoneRequired;
     private int buildingTimeSeconds;
     private int unlocksOnLevel;
+    private int production;
+    private int buildingXP;
 }

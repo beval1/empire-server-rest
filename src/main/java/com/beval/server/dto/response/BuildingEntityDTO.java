@@ -8,12 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class BuildingEntityDTO {
-    private Long id;
-    private String buildingName;
+    private BuildingTypeDTO buildingType;
     private String buildingImage;
     private int level;
-    private int upgradeWoodRequired;
-    private int upgradeStoneRequired;
-    private int upgradeBuildingTimeSeconds;
-    private int upgradeUnlocksOnLevel;
+    private int woodRequired;
+    private int stoneRequired;
+    private int buildingTimeSeconds;
+    private int unlocksOnLevel;
+    private int production;
+    private int buildingXP;
 }
