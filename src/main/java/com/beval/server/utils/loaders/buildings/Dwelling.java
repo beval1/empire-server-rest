@@ -5,10 +5,13 @@ import com.beval.server.model.entity.BuildingType;
 
 import java.util.List;
 
+import static com.beval.server.config.AppConstants.PRODUCTION_BUILDINGS_CASTLE_LIMIT;
+
 public class Dwelling implements LoaderBuilding{
     private final BuildingType buildingType = BuildingType
             .builder()
             .buildingName("Dwelling")
+            .castleLimit(PRODUCTION_BUILDINGS_CASTLE_LIMIT)
             .buildable(true)
             .build();
 

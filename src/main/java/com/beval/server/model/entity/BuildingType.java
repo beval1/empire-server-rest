@@ -1,5 +1,6 @@
 package com.beval.server.model.entity;
 
+import com.beval.server.config.AppConstants;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,7 +15,12 @@ import javax.persistence.Table;
 @Table(name="building_type")
 public class BuildingType extends BaseEntity {
     private String buildingName;
-    private int castleLimit;
+    @Builder.Default
+    private int castleLimit = AppConstants.PRODUCTION_BUILDINGS_CASTLE_LIMIT;
     @Builder.Default
     private boolean buildable = true;
+    @Builder.Default
+    private double widthSizingRatio = 1.0;
+    @Builder.Default
+    private double heightSizingRatio = 1.0;
 }

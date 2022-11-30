@@ -12,4 +12,6 @@ public class BuildingTypeDTO {
     private String buildingName;
     private int castleLimit;
     private boolean buildable;
+    private double widthSizingRatio;
+    private double heightSizingRatio;
 }

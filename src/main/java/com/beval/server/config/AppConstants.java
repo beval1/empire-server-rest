@@ -2,6 +2,7 @@ package com.beval.server.config;
 
 import java.util.List;
 import java.util.Map;
+
 import static java.util.Map.entry;
 
 public final class AppConstants {
@@ -20,6 +21,8 @@ public final class AppConstants {
     );
     public static final int MAXIMUM_USERNAME_LENGTH = 20;
     public static final int MINIMUM_USERNAME_LENGTH = 5;
+    public static final int PRODUCTION_BUILDINGS_CASTLE_LIMIT = 20;
+    public static final List<Integer> KEEP_COORDINATES = List.of(12, 3);
     public static final Map<Integer, Integer> userLevelsXP = Map.ofEntries(
             entry(1, 0),
             entry(2, 5),

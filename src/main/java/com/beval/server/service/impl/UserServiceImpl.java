@@ -9,7 +9,6 @@ import com.beval.server.security.UserPrincipal;
 import com.beval.server.service.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service

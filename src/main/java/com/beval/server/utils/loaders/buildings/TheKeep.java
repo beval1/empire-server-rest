@@ -10,6 +10,8 @@ public class TheKeep implements LoaderBuilding {
             .builder()
             .buildingName("The Keep")
             .buildable(false)
+            .widthSizingRatio(4)
+            .heightSizingRatio(4)
             .build();
 
     @Override
