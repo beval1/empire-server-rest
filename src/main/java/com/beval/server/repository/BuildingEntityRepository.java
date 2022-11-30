@@ -1,6 +1,7 @@
 package com.beval.server.repository;
 
 import com.beval.server.model.entity.BuildingEntity;
+import com.beval.server.model.entity.BuildingType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,5 @@ import java.util.Optional;
 public interface BuildingEntityRepository extends JpaRepository<BuildingEntity, Long> {
     Optional<BuildingEntity> findByBuildingTypeBuildingNameAndLevel(String buildingName, int level);
     List<BuildingEntity> findAllByLevel(int level);
+    List<BuildingEntity> findAllByBuildingType(BuildingType buildingType);
 }

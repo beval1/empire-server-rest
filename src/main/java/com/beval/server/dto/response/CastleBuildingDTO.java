@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CastleBuildingDTO {
+    private int id;
     private BuildingEntityDTO buildingEntity;
     private int coordinateX;
     private int coordinateY;

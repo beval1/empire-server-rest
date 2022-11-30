@@ -5,10 +5,7 @@ import com.beval.server.dto.response.ResponseDTO;
 import com.beval.server.service.BuildingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +23,22 @@ public class BuildingController {
     @GetMapping("/buildings/get-all")
     public ResponseEntity<ResponseDTO> getAllBuildings(@RequestParam(defaultValue = "1", required = false) int level) {
         List<BuildingEntityDTO> buildingEntityDTOS = buildingService.getAll(level);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTO
+                                .builder()
+                                .message("Buildings fetched successfully")
+                                .content(buildingEntityDTOS)
+                                .status(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+    @GetMapping("/buildings/get/{buildingType}")
+    public ResponseEntity<ResponseDTO> getSpecificBuilding(@PathVariable Long buildingType) {
+        List<BuildingEntityDTO> buildingEntityDTOS = buildingService.getSpecificBuilding(buildingType);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
