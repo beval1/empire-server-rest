@@ -37,6 +37,7 @@ public class WoodCutter implements LoaderBuilding {
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727847/empire/buildings/woodcutter/woodcutter_small_img-removebg-preview_hm2krq.png")
                 .woodRequired(0)
                 .stoneRequired(1)
+                .buildingXP(2)
                 .build();
     }
 }

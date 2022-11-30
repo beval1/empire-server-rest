@@ -61,7 +61,7 @@ public class DataLoader implements ApplicationRunner {
                             .firstName("Test")
                             .lastName("Test")
                             .email("test@test.com")
-                            .totalXP(100)
+                            .totalXP(0)
                             .build()
             );
 

@@ -44,7 +44,7 @@ public class CastleController {
     public ResponseEntity<ResponseDTO> createCastleBuilding(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                                             @Valid @RequestBody CreateCastleBuildingDTO createCastleBuildingDTO
     ) {
-        castleService.createCastleBuilding(userPrincipal, createCastleBuildingDTO);
+        castleService.createBuilding(userPrincipal, createCastleBuildingDTO);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

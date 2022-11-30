@@ -35,6 +35,7 @@ public class Barracks implements LoaderBuilding{
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669670047/empire/buildings/barracks/barracks_level_1-removebg_wq1oxr.png")
                 .woodRequired(1000)
                 .stoneRequired(1250)
+                .buildingXP(10)
                 .build();
     }
 }

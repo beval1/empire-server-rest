@@ -38,6 +38,7 @@ public class Granary implements LoaderBuilding {
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727583/empire/buildings/granary/granary_qkb6nl.png")
                 .woodRequired(0)
                 .stoneRequired(1)
+                .buildingXP(2)
                 .build();
     }
 }

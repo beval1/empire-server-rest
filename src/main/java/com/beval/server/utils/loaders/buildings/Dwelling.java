@@ -37,6 +37,7 @@ public class Dwelling implements LoaderBuilding{
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727607/empire/buildings/dwelling/dwelling_leve1-removebg_h9xpmr.png")
                 .woodRequired(0)
                 .stoneRequired(1)
+                .buildingXP(2)
                 .build();
     }
 }

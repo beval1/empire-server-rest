@@ -62,7 +62,7 @@ public class CastleServiceImpl implements CastleService {
 
     @Transactional
     @Override
-    public void createCastleBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO) {
+    public void createBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO) {
         System.out.println(createCastleBuildingDTO.getColumn());
         System.out.println(createCastleBuildingDTO.getRow());
 
@@ -88,6 +88,12 @@ public class CastleServiceImpl implements CastleService {
         BuildingEntity buildingEntity = buildingEntityRepository
                 .findByBuildingTypeBuildingNameAndLevel(buildingType.getBuildingName(), 1)
                 .orElseThrow(ResourceNotFoundException::new);
+
+        if (buildingEntity.getStoneRequired() > userEntity.getCastle().getStone() ||
+                buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()){
+            throw new NotEnoughResourcesException();
+        }
+
         CastleBuilding castleBuilding = CastleBuilding
                 .builder()
                 .buildingEntity(buildingEntity)
@@ -96,6 +102,15 @@ public class CastleServiceImpl implements CastleService {
                 .build();
         castleBuildingRepository.save(castleBuilding);
         userEntity.getCastle().getBuildings().add(castleBuilding);
+
+        //give XP
+        userEntity.setTotalXP(userEntity.getTotalXP() + buildingEntity.getBuildingXP());
+
+        //subtract actual resources
+        CastleEntity castleEntity = userEntity.getCastle();
+        castleEntity.setWood(castleEntity.getWood() - buildingEntity.getWoodRequired());
+        castleEntity.setStone(castleEntity.getStone() - buildingEntity.getStoneRequired());
+        userEntity.setCastle(castleEntity);
     }
 
     @Transactional
@@ -116,6 +131,9 @@ public class CastleServiceImpl implements CastleService {
                 .buildings(List.of(keep))
                 .coordinateX(10)
                 .coordinateY(10)
+                        .food(2500)
+                        .wood(2500)
+                        .stone(2500)
                 .build());
     }
 

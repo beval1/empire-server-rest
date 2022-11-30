@@ -37,6 +37,7 @@ public class StoneQuarry implements LoaderBuilding {
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727893/empire/buildings/stonequarry/stonequarry_small_img-removebg-preview_mklt4x.png")
                 .woodRequired(0)
                 .stoneRequired(1)
+                .buildingXP(2)
                 .build();
     }
 }

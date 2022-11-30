@@ -10,5 +10,5 @@ public interface CastleService {
     CastleEntity createCastle();
     void createCastleForUser(UserPrincipal userPrincipal);
 
-    void createCastleBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO);
+    void createBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO);
 }

@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.List;
 
+//TODO: Don't send wood, stone, etc. make new endpoint for fetching resources only
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,4 +15,9 @@ public class CastleDTO {
     private List<CastleBuildingDTO> buildings;
     private int coordinateX;
     private int coordinateY;
+    private int wood;
+    private int stone;
+    private int food;
+    private int army;
+    private int citizens;
 }
