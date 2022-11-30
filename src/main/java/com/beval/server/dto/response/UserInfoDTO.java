@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class UserInfoDTO {
     private String username;
+    private int totalXP;
     private int level;
     private int mightyPoints;
     private int coins;

@@ -32,7 +32,7 @@ public class UserEntity extends BaseEntity {
     private boolean accountExpired = false;
     @Builder.Default
     private boolean credentialsExpired = false;
-    private int level;
+    private int totalXP;
     private int mightyPoints;
     private int coins;
     private int rubies;

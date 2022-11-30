@@ -52,6 +52,7 @@ public class DataLoader implements ApplicationRunner {
                             .roles(Set.of(userRole))
                             .firstName(null)
                             .lastName(null)
+                            .totalXP(0)
                             .email("deleted@deleted.com")
                             .build()
             );
@@ -66,6 +67,7 @@ public class DataLoader implements ApplicationRunner {
                             .firstName("Test")
                             .lastName("Test")
                             .email("test@test.com")
+                            .totalXP(100)
                             .build()
             );
 
@@ -79,6 +81,7 @@ public class DataLoader implements ApplicationRunner {
                             .firstName("Admin")
                             .lastName("Adminov")
                             .email("admin@admin.com")
+                            .totalXP(5)
                             .build()
             );
 

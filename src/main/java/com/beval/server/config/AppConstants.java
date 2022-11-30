@@ -1,6 +1,8 @@
 package com.beval.server.config;
 
 import java.util.List;
+import java.util.Map;
+import static java.util.Map.entry;
 
 public final class AppConstants {
     private AppConstants(){}
@@ -18,4 +20,16 @@ public final class AppConstants {
     );
     public static final int MAXIMUM_USERNAME_LENGTH = 20;
     public static final int MINIMUM_USERNAME_LENGTH = 5;
+    public static final Map<Integer, Integer> userLevelsXP = Map.ofEntries(
+            entry(1, 0),
+            entry(2, 5),
+            entry(3, 15),
+            entry(4, 15),
+            entry(5, 25),
+            entry(6, 40),
+            entry(7, 60),
+            entry(8, 100),
+            entry(9, 150),
+            entry(10, 200)
+    );
 }
