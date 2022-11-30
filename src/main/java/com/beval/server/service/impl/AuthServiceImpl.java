@@ -11,6 +11,7 @@ import com.beval.server.repository.RoleRepository;
 import com.beval.server.repository.UserRepository;
 import com.beval.server.security.JwtTokenProvider;
 import com.beval.server.service.AuthService;
+import com.beval.server.service.CastleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,23 +26,24 @@ import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
+    private final CastleService castleService;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
                            UserRepository userRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper,
-                           RoleRepository roleRepository) {
+                           RoleRepository roleRepository, CastleService castleService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
+        this.castleService = castleService;
     }
 
     @Override
@@ -79,6 +81,8 @@ public class AuthServiceImpl implements AuthService {
         user.setAccountExpired(false);
         user.setCredentialsExpired(false);
 
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        castleService.createCastleForUser(user);
     }
 }

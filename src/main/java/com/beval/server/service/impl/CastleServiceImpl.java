@@ -48,9 +48,9 @@ public class CastleServiceImpl implements CastleService {
 
     @Transactional
     @Override
-    public void createCastleForUser(UserPrincipal principal) {
-        UserEntity userEntity = userRepository.findByUsernameOrEmail(principal.getUsername(),
-                principal.getUsername()).orElseThrow(NotAuthorizedException::new);
+    public void createCastleForUser(UserEntity user) {
+        UserEntity userEntity = userRepository.findById(user.getId())
+                .orElseThrow(NotAuthorizedException::new);
 
         if (userEntity.getCastle() != null){
             throw new CastleAlreadyExistsException();
@@ -135,6 +135,15 @@ public class CastleServiceImpl implements CastleService {
                         .wood(2500)
                         .stone(2500)
                 .build());
+    }
+
+    @Transactional
+    @Override
+    public void upgradeBuilding(UserPrincipal principal) {
+        UserEntity userEntity = userRepository.findByUsernameOrEmail(principal.getUsername(),
+                principal.getUsername()).orElseThrow(NotAuthorizedException::new);
+
+
     }
 
 }

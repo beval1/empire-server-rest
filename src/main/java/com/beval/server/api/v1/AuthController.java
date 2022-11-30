@@ -5,6 +5,7 @@ import com.beval.server.dto.payload.SignupDTO;
 import com.beval.server.dto.response.JwtResponseDTO;
 import com.beval.server.dto.response.ResponseDTO;
 import com.beval.server.service.AuthService;
+import com.beval.server.service.CastleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,6 @@ public class AuthController {
 
     @PostMapping("/auth/signin")
     public ResponseEntity<ResponseDTO> signIn(@Valid @RequestBody SignInDTO signinDto) {
-
         String token = authService.signInUser(signinDto);
 
         return ResponseEntity
