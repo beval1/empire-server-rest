@@ -36,9 +36,9 @@ public class UserServiceImpl implements UserService {
 
     public static int calculateUserLevel(UserEntity user){
         Map<Integer, Integer> levels = AppConstants.userLevelsXP;
-        for (Map.Entry<Integer, Integer> entry : levels.entrySet()  ){
-            if (entry.getValue() <= user.getTotalXP()){
-                return entry.getKey();
+        for (int i = levels.size(); i >= 1; i--) {
+            if (levels.get(i) <= user.getTotalXP()){
+                return i;
             }
         }
         return 1;
