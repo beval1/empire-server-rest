@@ -9,7 +9,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpgradeBuildingDTO {
+public class DestroyBuildingDTO {
     @Positive
     private int buildingId;
 }

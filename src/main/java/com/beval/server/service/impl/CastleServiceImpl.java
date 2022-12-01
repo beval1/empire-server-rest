@@ -1,6 +1,7 @@
 package com.beval.server.service.impl;
 
 import com.beval.server.dto.payload.CreateCastleBuildingDTO;
+import com.beval.server.dto.payload.DestroyBuildingDTO;
 import com.beval.server.dto.payload.UpgradeBuildingDTO;
 import com.beval.server.dto.response.CastleDTO;
 import com.beval.server.exception.*;
@@ -92,7 +93,6 @@ public class CastleServiceImpl implements CastleService {
             throw new BuildingNotUnlockedException();
         }
 
-        //check resources;
         if (buildingEntity.getStoneRequired() > userEntity.getCastle().getStone() ||
                 buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()){
             throw new NotEnoughResourcesException();
@@ -167,7 +167,6 @@ public class CastleServiceImpl implements CastleService {
             throw new BuildingNotUnlockedException();
         }
 
-        //check resources;
         if (nextLevelBuilding.getStoneRequired() > userEntity.getCastle().getStone() ||
                 nextLevelBuilding.getWoodRequired() > userEntity.getCastle().getWood()){
             throw new NotEnoughResourcesException();
@@ -183,6 +182,24 @@ public class CastleServiceImpl implements CastleService {
         CastleEntity castleEntity = userEntity.getCastle();
         castleEntity.setWood(castleEntity.getWood() - nextLevelBuilding.getWoodRequired());
         castleEntity.setStone(castleEntity.getStone() - nextLevelBuilding.getStoneRequired());
+        userEntity.setCastle(castleEntity);
+    }
+
+    @Transactional
+    @Override
+    public void destroyBuilding(UserPrincipal userPrincipal, DestroyBuildingDTO destroyBuildingDTO) {
+        UserEntity userEntity = userRepository.findByUsernameOrEmail(userPrincipal.getUsername(),
+                userPrincipal.getUsername()).orElseThrow(NotAuthorizedException::new);
+        CastleBuilding castleBuilding = userEntity.getCastle().getBuildings().stream()
+                .filter(building -> building.getId() == destroyBuildingDTO.getBuildingId())
+                .findFirst().orElseThrow(BuildingNotFoundException::new);
+
+        if (!castleBuilding.getBuildingEntity().getBuildingType().isDestroyable()) {
+            throw new BuildingNotDestroyableException();
+        }
+
+        CastleEntity castleEntity = userEntity.getCastle();
+        castleEntity.getBuildings().remove(castleBuilding);
         userEntity.setCastle(castleEntity);
     }
 
