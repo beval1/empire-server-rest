@@ -1,6 +1,5 @@
 package com.beval.server.service.impl;
 
-import com.beval.server.config.AppConstants;
 import com.beval.server.dto.response.UserInfoDTO;
 import com.beval.server.exception.NotAuthorizedException;
 import com.beval.server.model.entity.UserEntity;
@@ -8,8 +7,6 @@ import com.beval.server.repository.UserRepository;
 import com.beval.server.security.UserPrincipal;
 import com.beval.server.service.UserService;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,7 +20,7 @@ public class UserServiceImpl implements UserService {
     public UserInfoDTO getUserInfo(UserPrincipal principal) {
         UserEntity userEntity = userRepository.findByUsernameOrEmail(principal.getUsername(),
                 principal.getUsername()).orElseThrow(NotAuthorizedException::new);
-        int level = calculateUserLevel(userEntity);
+        int level = UserService.calculateUserLevel(userEntity);
         return UserInfoDTO.builder()
                 .username(userEntity.getUsername())
                 .coins(userEntity.getCoins())
@@ -32,15 +29,5 @@ public class UserServiceImpl implements UserService {
                 .mightyPoints(userEntity.getMightyPoints())
                 .rubies(userEntity.getRubies())
                 .build();
-    }
-
-    public static int calculateUserLevel(UserEntity user){
-        Map<Integer, Integer> levels = AppConstants.userLevelsXP;
-        for (int i = levels.size(); i >= 1; i--) {
-            if (levels.get(i) <= user.getTotalXP()){
-                return i;
-            }
-        }
-        return 1;
     }
 }

@@ -1,6 +1,7 @@
 package com.beval.server.api.v1;
 
 import com.beval.server.dto.payload.CreateCastleBuildingDTO;
+import com.beval.server.dto.payload.UpgradeBuildingDTO;
 import com.beval.server.dto.response.CastleDTO;
 import com.beval.server.dto.response.ResponseDTO;
 import com.beval.server.security.UserPrincipal;
@@ -52,6 +53,23 @@ public class CastleController {
                         ResponseDTO
                                 .builder()
                                 .message("Building created successfully!")
+                                .content(null)
+                                .status(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+    @PostMapping("/castle/upgrade-building")
+    public ResponseEntity<ResponseDTO> createCastleBuilding(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                                            @Valid @RequestBody UpgradeBuildingDTO upgradeBuildingDTO) {
+        castleService.upgradeBuilding(userPrincipal, upgradeBuildingDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTO
+                                .builder()
+                                .message("Building upgraded successfully!")
                                 .content(null)
                                 .status(HttpStatus.OK.value())
                                 .build()

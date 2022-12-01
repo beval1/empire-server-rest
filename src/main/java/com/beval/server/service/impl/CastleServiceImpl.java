@@ -1,12 +1,14 @@
 package com.beval.server.service.impl;
 
 import com.beval.server.dto.payload.CreateCastleBuildingDTO;
+import com.beval.server.dto.payload.UpgradeBuildingDTO;
 import com.beval.server.dto.response.CastleDTO;
 import com.beval.server.exception.*;
 import com.beval.server.model.entity.*;
 import com.beval.server.repository.*;
 import com.beval.server.security.UserPrincipal;
 import com.beval.server.service.CastleService;
+import com.beval.server.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -63,9 +65,6 @@ public class CastleServiceImpl implements CastleService {
     @Transactional
     @Override
     public void createBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO) {
-        System.out.println(createCastleBuildingDTO.getColumn());
-        System.out.println(createCastleBuildingDTO.getRow());
-
         UserEntity userEntity = userRepository.findByUsernameOrEmail(userPrincipal.getUsername(),
                 userPrincipal.getUsername()).orElseThrow(NotAuthorizedException::new);
 
@@ -84,16 +83,22 @@ public class CastleServiceImpl implements CastleService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Building not buildable!");
         }
 
-        //create Building
         BuildingEntity buildingEntity = buildingEntityRepository
                 .findByBuildingTypeBuildingNameAndLevel(buildingType.getBuildingName(), 1)
                 .orElseThrow(ResourceNotFoundException::new);
 
+        //check if unlocked
+        if (buildingEntity.getUnlocksOnLevel() > UserService.calculateUserLevel(userEntity)){
+            throw new BuildingNotUnlockedException();
+        }
+
+        //check resources;
         if (buildingEntity.getStoneRequired() > userEntity.getCastle().getStone() ||
                 buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()){
             throw new NotEnoughResourcesException();
         }
 
+        //create Building
         CastleBuilding castleBuilding = CastleBuilding
                 .builder()
                 .buildingEntity(buildingEntity)
@@ -139,11 +144,46 @@ public class CastleServiceImpl implements CastleService {
 
     @Transactional
     @Override
-    public void upgradeBuilding(UserPrincipal principal) {
+    public void upgradeBuilding(UserPrincipal principal, UpgradeBuildingDTO upgradeBuildingDTO) {
         UserEntity userEntity = userRepository.findByUsernameOrEmail(principal.getUsername(),
                 principal.getUsername()).orElseThrow(NotAuthorizedException::new);
+        CastleBuilding castleBuilding = userEntity.getCastle().getBuildings()
+                .stream().filter(building -> building.getId() == upgradeBuildingDTO.getBuildingId())
+                .findFirst().orElseThrow(BuildingNotFoundException::new);
+        int buildingIndex = userEntity.getCastle().getBuildings().indexOf(castleBuilding);
 
+        //find next level building entity
+        BuildingEntity nextLevelBuilding = buildingEntityRepository.findByBuildingTypeBuildingNameAndLevel(
+                castleBuilding.getBuildingEntity().getBuildingType().getBuildingName(),
+                castleBuilding.getBuildingEntity().getLevel()+1).orElse(null);
 
+        if (nextLevelBuilding == null){
+            throw new BuildingMaxLevelReachedException();
+        }
+
+        int userLevel = UserService.calculateUserLevel(userEntity);
+        //check if unlocked
+        if (nextLevelBuilding.getUnlocksOnLevel() > userLevel){
+            throw new BuildingNotUnlockedException();
+        }
+
+        //check resources;
+        if (nextLevelBuilding.getStoneRequired() > userEntity.getCastle().getStone() ||
+                nextLevelBuilding.getWoodRequired() > userEntity.getCastle().getWood()){
+            throw new NotEnoughResourcesException();
+        }
+
+        castleBuilding.setBuildingEntity(nextLevelBuilding);
+        userEntity.getCastle().getBuildings().set(buildingIndex, castleBuilding);
+
+        //give XP
+        userEntity.setTotalXP(userEntity.getTotalXP() + nextLevelBuilding.getBuildingXP());
+
+        //subtract actual resources
+        CastleEntity castleEntity = userEntity.getCastle();
+        castleEntity.setWood(castleEntity.getWood() - nextLevelBuilding.getWoodRequired());
+        castleEntity.setStone(castleEntity.getStone() - nextLevelBuilding.getStoneRequired());
+        userEntity.setCastle(castleEntity);
     }
 
 }

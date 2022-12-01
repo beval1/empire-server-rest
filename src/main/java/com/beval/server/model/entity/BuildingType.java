@@ -20,6 +20,8 @@ public class BuildingType extends BaseEntity {
     @Builder.Default
     private boolean buildable = true;
     @Builder.Default
+    private boolean destroyable = true;
+    @Builder.Default
     private double widthSizingRatio = 1.0;
     @Builder.Default
     private double heightSizingRatio = 1.0;

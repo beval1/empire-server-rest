@@ -12,6 +12,7 @@ public class TheKeep implements LoaderBuilding {
             .buildable(false)
             .widthSizingRatio(4)
             .heightSizingRatio(4)
+            .destroyable(false)
             .build();
 
     @Override

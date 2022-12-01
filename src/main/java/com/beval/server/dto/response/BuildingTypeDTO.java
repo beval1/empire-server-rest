@@ -14,4 +14,5 @@ public class BuildingTypeDTO {
     private boolean buildable;
     private double widthSizingRatio;
     private double heightSizingRatio;
+    private boolean destroyable;
 }

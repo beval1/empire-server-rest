@@ -28,12 +28,12 @@ public final class AppConstants {
             entry(1, 0),
             entry(2, 5),
             entry(3, 15),
-            entry(4, 15),
-            entry(5, 25),
-            entry(6, 40),
-            entry(7, 60),
-            entry(8, 100),
-            entry(9, 150),
-            entry(10, 200)
+            entry(4, 25),
+            entry(5, 40),
+            entry(6, 60),
+            entry(7, 100),
+            entry(8, 150),
+            entry(9, 200),
+            entry(10, 250)
     );
 }
