@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.beval.server.config.AppConstants.KEEP_COORDINATES;
+import static com.beval.server.config.AppConstants.validGridBuildingPosition;
 
 @Service
 public class CastleServiceImpl implements CastleService {
@@ -73,8 +74,8 @@ public class CastleServiceImpl implements CastleService {
                 .orElseThrow(ResourceNotFoundException::new);
 
         //check if max building limit for castle is reached
-        List<CastleBuilding> castleBuildingsOfType = castleBuildingRepository
-                .findAllByBuildingEntity_BuildingType(buildingType);
+        List<CastleBuilding> castleBuildingsOfType = userEntity.getCastle().getBuildings().stream()
+                .filter(building -> building.getBuildingEntity().getBuildingType().equals(buildingType)).toList();
         if (castleBuildingsOfType.size() >= buildingType.getCastleLimit()){
             throw new MaxBuildingLimitReachedException();
         }
@@ -96,6 +97,15 @@ public class CastleServiceImpl implements CastleService {
         if (buildingEntity.getStoneRequired() > userEntity.getCastle().getStone() ||
                 buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()){
             throw new NotEnoughResourcesException();
+        }
+
+        //check if position is valid
+        CastleBuilding existingCoordinatesBuilding = userEntity.getCastle().getBuildings().stream().filter(building ->
+                building.getCoordinateX() == createCastleBuildingDTO.getColumn() &&
+                        building.getCoordinateY() == createCastleBuildingDTO.getRow()).findFirst().orElse(null);
+        if (validGridBuildingPosition[createCastleBuildingDTO.getRow()][createCastleBuildingDTO.getColumn()] == 0
+        || existingCoordinatesBuilding != null){
+            throw new InvalidPositionException();
         }
 
         //create Building

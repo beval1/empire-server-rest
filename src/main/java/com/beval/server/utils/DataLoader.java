@@ -65,7 +65,7 @@ public class DataLoader implements ApplicationRunner {
                             .build()
             );
 
-            userRepository.save(
+            UserEntity adminUser = userRepository.save(
                     UserEntity
                             .builder()
                             .username("admin")
@@ -83,6 +83,8 @@ public class DataLoader implements ApplicationRunner {
             buildingLoader.loadAll();
 
             user.setCastle(castleService.createCastle());
+            deletedUser.setCastle(castleService.createCastle());
+            adminUser.setCastle(castleService.createCastle());
         }
     }
 

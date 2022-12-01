@@ -3,6 +3,7 @@ package com.beval.server.model.entity;
 import com.beval.server.config.AppConstants;
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="building_type")
 public class BuildingType extends BaseEntity {
+    @Column(unique = true)
     private String buildingName;
     @Builder.Default
     private int castleLimit = AppConstants.PRODUCTION_BUILDINGS_CASTLE_LIMIT;

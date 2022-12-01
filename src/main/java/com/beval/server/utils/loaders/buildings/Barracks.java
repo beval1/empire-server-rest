@@ -10,6 +10,8 @@ public class Barracks implements LoaderBuilding{
             .builder()
             .buildingName("Barracks")
             .buildable(true)
+            .heightSizingRatio(2)
+            .widthSizingRatio(2)
             .castleLimit(1)
             .build();
 

@@ -31,13 +31,14 @@ public class StoneQuarry implements LoaderBuilding {
         return BuildingEntity
                 .builder()
                 .level(1)
-                .unlocksOnLevel(0)
+                .unlocksOnLevel(1)
                 .buildingType(buildingType)
                 .buildingTimeSeconds(3600)
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727893/empire/buildings/stonequarry/stonequarry_small_img-removebg-preview_mklt4x.png")
                 .woodRequired(0)
                 .stoneRequired(1)
                 .buildingXP(2)
+                .production(100)
                 .build();
     }
 }

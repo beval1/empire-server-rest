@@ -12,7 +12,7 @@ public class Granary implements LoaderBuilding {
             .builder()
             .buildingName("Granary")
             .castleLimit(PRODUCTION_BUILDINGS_CASTLE_LIMIT)
-            .heightSizingRatio(1.5)
+            .heightSizingRatio(1.1)
             .buildable(true)
             .build();
 
@@ -32,13 +32,14 @@ public class Granary implements LoaderBuilding {
         return BuildingEntity
                 .builder()
                 .level(1)
-                .unlocksOnLevel(0)
+                .unlocksOnLevel(1)
                 .buildingType(buildingType)
                 .buildingTimeSeconds(3600)
                 .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727583/empire/buildings/granary/granary_qkb6nl.png")
                 .woodRequired(0)
                 .stoneRequired(1)
                 .buildingXP(2)
+                .production(100)
                 .build();
     }
 }

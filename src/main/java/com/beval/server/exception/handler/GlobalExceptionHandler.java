@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
             UserAlreadyExistsException.class, NotAuthorizedException.class, UserBannedException.class,
             BuildingNotFoundException.class, CastleNotFoundException.class, MaxBuildingLimitReachedException.class,
             CastleAlreadyExistsException.class, NotEnoughResourcesException.class, BuildingNotUnlockedException.class,
-            BuildingMaxLevelReachedException.class
+            BuildingMaxLevelReachedException.class, InvalidPositionException.class, ApiException.class
     })
     public ResponseEntity<Object> handleCustomExceptions(ApiException ex) {
         return ResponseEntity.status(ex.getStatus())
