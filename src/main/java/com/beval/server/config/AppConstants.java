@@ -21,6 +21,10 @@ public final class AppConstants {
     public static final int MINIMUM_USERNAME_LENGTH = 5;
     public static final int PRODUCTION_BUILDINGS_CASTLE_LIMIT = 20;
     public static final List<Integer> KEEP_COORDINATES = List.of(12, 1);
+    public static final int CITIZEN_COINS_MULTIPLIER = 2;
+    public static final int CASTLE_STARTING_FOOD = 10000;
+    public static final int CASTLE_STARTING_WOOD = 10000;
+    public static final int CASTLE_STARTING_STONE = 10000;
 
     public static final Map<Integer, Integer> userLevelsXP = Map.ofEntries(
             entry(1, 0),

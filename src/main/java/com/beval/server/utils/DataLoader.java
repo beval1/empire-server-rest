@@ -1,11 +1,13 @@
 package com.beval.server.utils;
 
+import com.beval.server.model.entity.CastleArmy;
 import com.beval.server.model.entity.RoleEntity;
 import com.beval.server.model.entity.UserEntity;
 import com.beval.server.model.enums.RoleEnum;
 import com.beval.server.repository.RoleRepository;
 import com.beval.server.repository.UserRepository;
 import com.beval.server.service.CastleService;
+import com.beval.server.utils.loaders.ArmyUnitLoader;
 import com.beval.server.utils.loaders.BuildingLoader;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -21,12 +23,15 @@ public class DataLoader implements ApplicationRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BuildingLoader buildingLoader;
+    private final ArmyUnitLoader armyUnitLoader;
     private final CastleService castleService;
 
-    public DataLoader(UserRepository userRepository, RoleRepository roleRepository, BuildingLoader buildingLoader, CastleService castleService) {
+    public DataLoader(UserRepository userRepository, RoleRepository roleRepository, BuildingLoader buildingLoader,
+                      ArmyUnitLoader armyUnitLoader, CastleService castleService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.buildingLoader = buildingLoader;
+        this.armyUnitLoader = armyUnitLoader;
         this.castleService = castleService;
     }
 
@@ -48,6 +53,7 @@ public class DataLoader implements ApplicationRunner {
                             .lastName(null)
                             .totalXP(0)
                             .email("deleted@deleted.com")
+                            .coins(2500)
                             .build()
             );
 
@@ -62,6 +68,7 @@ public class DataLoader implements ApplicationRunner {
                             .lastName("Test")
                             .email("test@test.com")
                             .totalXP(0)
+                            .coins(2500)
                             .build()
             );
 
@@ -76,15 +83,19 @@ public class DataLoader implements ApplicationRunner {
                             .lastName("Adminov")
                             .email("admin@admin.com")
                             .totalXP(5)
+                            .coins(2500)
                             .build()
             );
 
             //load all buildings
             buildingLoader.loadAll();
+            armyUnitLoader.loadAll();
 
             user.setCastle(castleService.createCastle());
             deletedUser.setCastle(castleService.createCastle());
             adminUser.setCastle(castleService.createCastle());
+
+            user.getCastle().getArmy().add(null);
         }
     }
 

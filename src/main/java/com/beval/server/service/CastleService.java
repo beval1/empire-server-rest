@@ -15,4 +15,5 @@ public interface CastleService {
     void createBuilding(UserPrincipal userPrincipal, CreateCastleBuildingDTO createCastleBuildingDTO);
     void upgradeBuilding(UserPrincipal principal, UpgradeBuildingDTO upgradeBuildingDTO);
     void destroyBuilding(UserPrincipal userPrincipal, DestroyBuildingDTO destroyBuildingDTO);
+    void buyUnits(UserPrincipal userPrincipal, Long armyUnitId);
 }

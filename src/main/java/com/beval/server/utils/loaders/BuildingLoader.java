@@ -25,6 +25,7 @@ public class BuildingLoader implements Loader {
         this.buildingEntityRepository = buildingEntityRepository;
     }
 
+    @Override
     public void loadAll() {
         buildings.forEach(b -> {
             buildingTypeRepository.save(b.getBuildingType());

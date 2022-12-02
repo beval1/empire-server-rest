@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.beval.server.config.AppConstants.KEEP_COORDINATES;
-import static com.beval.server.config.AppConstants.validGridBuildingPosition;
+import static com.beval.server.config.AppConstants.*;
 
 @Service
 public class CastleServiceImpl implements CastleService {
@@ -27,14 +26,18 @@ public class CastleServiceImpl implements CastleService {
     private final BuildingEntityRepository buildingEntityRepository;
     private final BuildingTypeRepository buildingTypeRepository;
     private final CastleBuildingRepository castleBuildingRepository;
+    private final CastleArmyRepository castleArmyRepository;
+    private final ArmyUnitRepository armyUnitRepository;
     private final ModelMapper modelMapper;
 
-    public CastleServiceImpl(UserRepository userRepository, CastleRepository castleRepository, BuildingEntityRepository buildingEntityRepository, BuildingTypeRepository buildingTypeRepository, CastleBuildingRepository castleBuildingRepository, ModelMapper modelMapper) {
+    public CastleServiceImpl(UserRepository userRepository, CastleRepository castleRepository, BuildingEntityRepository buildingEntityRepository, BuildingTypeRepository buildingTypeRepository, CastleBuildingRepository castleBuildingRepository, CastleArmyRepository castleArmyRepository, ArmyUnitRepository armyUnitRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.castleRepository = castleRepository;
         this.buildingEntityRepository = buildingEntityRepository;
         this.buildingTypeRepository = buildingTypeRepository;
         this.castleBuildingRepository = castleBuildingRepository;
+        this.castleArmyRepository = castleArmyRepository;
+        this.armyUnitRepository = armyUnitRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -47,7 +50,10 @@ public class CastleServiceImpl implements CastleService {
         CastleEntity castleEntity = castleRepository.findById(userEntity.getCastle().getId())
                 .orElseThrow(CastleNotFoundException::new);
 
-        return modelMapper.map(castleEntity, CastleDTO.class);
+        int armySize = castleEntity.getArmy().stream().map(CastleArmy::getArmyUnitCount).reduce(0, Integer::sum);
+        CastleDTO castleDTO = modelMapper.map(castleEntity, CastleDTO.class);
+        castleDTO.setArmySize(armySize);
+        return castleDTO;
     }
 
     @Transactional
@@ -56,7 +62,7 @@ public class CastleServiceImpl implements CastleService {
         UserEntity userEntity = userRepository.findById(user.getId())
                 .orElseThrow(NotAuthorizedException::new);
 
-        if (userEntity.getCastle() != null){
+        if (userEntity.getCastle() != null) {
             throw new CastleAlreadyExistsException();
         }
 
@@ -76,12 +82,12 @@ public class CastleServiceImpl implements CastleService {
         //check if max building limit for castle is reached
         List<CastleBuilding> castleBuildingsOfType = userEntity.getCastle().getBuildings().stream()
                 .filter(building -> building.getBuildingEntity().getBuildingType().equals(buildingType)).toList();
-        if (castleBuildingsOfType.size() >= buildingType.getCastleLimit()){
+        if (castleBuildingsOfType.size() >= buildingType.getCastleLimit()) {
             throw new MaxBuildingLimitReachedException();
         }
 
         //check if buildable
-        if (!buildingType.isBuildable()){
+        if (!buildingType.isBuildable()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Building not buildable!");
         }
 
@@ -90,12 +96,12 @@ public class CastleServiceImpl implements CastleService {
                 .orElseThrow(ResourceNotFoundException::new);
 
         //check if unlocked
-        if (buildingEntity.getUnlocksOnLevel() > UserService.calculateUserLevel(userEntity)){
+        if (buildingEntity.getUnlocksOnLevel() > UserService.calculateUserLevel(userEntity)) {
             throw new BuildingNotUnlockedException();
         }
 
         if (buildingEntity.getStoneRequired() > userEntity.getCastle().getStone() ||
-                buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()){
+                buildingEntity.getWoodRequired() > userEntity.getCastle().getWood()) {
             throw new NotEnoughResourcesException();
         }
 
@@ -104,7 +110,7 @@ public class CastleServiceImpl implements CastleService {
                 building.getCoordinateX() == createCastleBuildingDTO.getColumn() &&
                         building.getCoordinateY() == createCastleBuildingDTO.getRow()).findFirst().orElse(null);
         if (validGridBuildingPosition[createCastleBuildingDTO.getRow()][createCastleBuildingDTO.getColumn()] == 0
-        || existingCoordinatesBuilding != null){
+                || existingCoordinatesBuilding != null) {
             throw new InvalidPositionException();
         }
 
@@ -146,9 +152,9 @@ public class CastleServiceImpl implements CastleService {
                 .buildings(List.of(keep))
                 .coordinateX(10)
                 .coordinateY(10)
-                        .food(2500)
-                        .wood(2500)
-                        .stone(2500)
+                .food(CASTLE_STARTING_FOOD)
+                .wood(CASTLE_STARTING_WOOD)
+                .stone(CASTLE_STARTING_STONE)
                 .build());
     }
 
@@ -165,20 +171,20 @@ public class CastleServiceImpl implements CastleService {
         //find next level building entity
         BuildingEntity nextLevelBuilding = buildingEntityRepository.findByBuildingTypeBuildingNameAndLevel(
                 castleBuilding.getBuildingEntity().getBuildingType().getBuildingName(),
-                castleBuilding.getBuildingEntity().getLevel()+1).orElse(null);
+                castleBuilding.getBuildingEntity().getLevel() + 1).orElse(null);
 
-        if (nextLevelBuilding == null){
+        if (nextLevelBuilding == null) {
             throw new BuildingMaxLevelReachedException();
         }
 
         int userLevel = UserService.calculateUserLevel(userEntity);
         //check if unlocked
-        if (nextLevelBuilding.getUnlocksOnLevel() > userLevel){
+        if (nextLevelBuilding.getUnlocksOnLevel() > userLevel) {
             throw new BuildingNotUnlockedException();
         }
 
         if (nextLevelBuilding.getStoneRequired() > userEntity.getCastle().getStone() ||
-                nextLevelBuilding.getWoodRequired() > userEntity.getCastle().getWood()){
+                nextLevelBuilding.getWoodRequired() > userEntity.getCastle().getWood()) {
             throw new NotEnoughResourcesException();
         }
 
@@ -211,6 +217,26 @@ public class CastleServiceImpl implements CastleService {
         CastleEntity castleEntity = userEntity.getCastle();
         castleEntity.getBuildings().remove(castleBuilding);
         userEntity.setCastle(castleEntity);
+    }
+
+    @Transactional
+    @Override
+    public void buyUnits(UserPrincipal userPrincipal, Long armyUnitId, int armyCount) {
+        UserEntity userEntity = userRepository.findByUsernameOrEmail(userPrincipal.getUsername(),
+                userPrincipal.getUsername()).orElseThrow(NotAuthorizedException::new);
+        ArmyUnitEntity armyUnitEntity = armyUnitRepository.findById(armyUnitId)
+                .orElseThrow(ResourceNotFoundException::new);
+        List<CastleArmy> castleArmy = userEntity.getCastle().getArmy();
+        ArmyUnitEntity existingArmyUnit = castleArmy.stream().map(CastleArmy::getArmyUnit)
+                .filter(unitType -> unitType.getId().equals(armyUnitEntity.getId()))
+                .findAny().orElse(null);
+        if (existingArmyUnit == null) {
+            castleArmy.add(CastleArmy
+                    .builder()
+                            .armyUnit(armyUnitEntity)
+                            .armyUnitCount()
+                    .build())
+        }
     }
 
 }

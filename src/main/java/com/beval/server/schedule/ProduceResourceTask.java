@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.beval.server.config.AppConstants.CITIZEN_COINS_MULTIPLIER;
+
 @Component
 @Slf4j
 public class ProduceResourceTask {
@@ -31,10 +33,11 @@ public class ProduceResourceTask {
         for (UserEntity user : users) {
             CastleEntity userCastle = user.getCastle();
             int citizens = calculateProductionPerHour(userCastle, "Dwelling");
+            userCastle.setCitizens(citizens);
             userCastle.setWood(userCastle.getWood() + calculateProductionPerMinute(userCastle, "Woodcutter"));
             userCastle.setStone(userCastle.getStone() + calculateProductionPerMinute(userCastle, "Stone Quarry"));
             userCastle.setFood(userCastle.getFood() + calculateProductionPerMinute(userCastle, "Granary"));
-            userCastle.setCitizens(citizens);
+            user.setCoins(user.getCoins() + citizens * CITIZEN_COINS_MULTIPLIER);
         }
     }
 
