@@ -24,7 +24,10 @@ public class Barracks implements LoaderBuilding{
     public List<BuildingEntity> getBuildingLevels() {
         return List.of(
                 level1(),
-                level2()
+                level2(),
+                level3(),
+                level4(),
+                level5()
         );
     }
 
@@ -53,6 +56,48 @@ public class Barracks implements LoaderBuilding{
                 .woodRequired(10)
                 .stoneRequired(10)
                 .buildingXP(15)
+                .build();
+    }
+
+    private BuildingEntity level3(){
+        return BuildingEntity
+                .builder()
+                .level(3)
+                .unlocksOnLevel(4)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(5200)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670080266/empire/buildings/barracks/barracks_level3-removebg-preview_ifo6wj.png")
+                .woodRequired(10)
+                .stoneRequired(10)
+                .buildingXP(20)
+                .build();
+    }
+
+    private BuildingEntity level4(){
+        return BuildingEntity
+                .builder()
+                .level(4)
+                .unlocksOnLevel(5)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(5200)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670080272/empire/buildings/barracks/barracks_level4-removebg-preview_yaunl9.png")
+                .woodRequired(10)
+                .stoneRequired(10)
+                .buildingXP(20)
+                .build();
+    }
+
+    private BuildingEntity level5(){
+        return BuildingEntity
+                .builder()
+                .level(5)
+                .unlocksOnLevel(6)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(5200)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670080280/empire/buildings/barracks/barracks_level5-removebg-preview_xfoibp.png")
+                .woodRequired(10)
+                .stoneRequired(10)
+                .buildingXP(20)
                 .build();
     }
 }

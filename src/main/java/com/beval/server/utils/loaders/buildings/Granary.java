@@ -12,7 +12,7 @@ public class Granary implements LoaderBuilding {
             .builder()
             .buildingName("Granary")
             .castleLimit(PRODUCTION_BUILDINGS_CASTLE_LIMIT)
-            .heightSizingRatio(1.1)
+            .heightSizingRatio(1.0)
             .buildable(true)
             .build();
 
@@ -24,7 +24,10 @@ public class Granary implements LoaderBuilding {
     @Override
     public List<BuildingEntity> getBuildingLevels() {
         return List.of(
-                level1()
+                level1(),
+                level2(),
+                level3(),
+                level4()
         );
     }
 
@@ -35,11 +38,56 @@ public class Granary implements LoaderBuilding {
                 .unlocksOnLevel(1)
                 .buildingType(buildingType)
                 .buildingTimeSeconds(3600)
-                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669727583/empire/buildings/granary/granary_qkb6nl.png")
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670074310/empire/buildings/granary/granary_new_lbqgsr.png")
                 .woodRequired(0)
                 .stoneRequired(1)
                 .buildingXP(2)
                 .production(100)
+                .build();
+    }
+
+    private BuildingEntity level2() {
+        return BuildingEntity
+                .builder()
+                .level(2)
+                .unlocksOnLevel(3)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082679/empire/buildings/granary/granary_level2-removebg-preview_v3h9cg.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(130)
+                .build();
+    }
+
+    private BuildingEntity level3() {
+        return BuildingEntity
+                .builder()
+                .level(3)
+                .unlocksOnLevel(5)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082688/empire/buildings/granary/granary_level3-removebg-preview_mteeh3.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(160)
+                .build();
+    }
+
+    private BuildingEntity level4() {
+        return BuildingEntity
+                .builder()
+                .level(4)
+                .unlocksOnLevel(7)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082693/empire/buildings/granary/granary_level4-removebg-preview_tkfvpl.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(200)
                 .build();
     }
 }

@@ -23,7 +23,11 @@ public class StoneQuarry implements LoaderBuilding {
     @Override
     public List<BuildingEntity> getBuildingLevels() {
         return List.of(
-                level1()
+                level1(),
+                level2(),
+                level3(),
+                level4(),
+                level5()
         );
     }
 
@@ -39,6 +43,66 @@ public class StoneQuarry implements LoaderBuilding {
                 .stoneRequired(1)
                 .buildingXP(2)
                 .production(100)
+                .build();
+    }
+
+    private BuildingEntity level2() {
+        return BuildingEntity
+                .builder()
+                .level(2)
+                .unlocksOnLevel(2)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082012/empire/buildings/stonequarry/stonequarry_level3-removebg-preview_a8ptmh.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(110)
+                .build();
+    }
+
+    private BuildingEntity level3() {
+        return BuildingEntity
+                .builder()
+                .level(3)
+                .unlocksOnLevel(3)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082018/empire/buildings/stonequarry/stonequarry_level4-removebg-preview_hhcy3z.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(120)
+                .build();
+    }
+
+    private BuildingEntity level4() {
+        return BuildingEntity
+                .builder()
+                .level(4)
+                .unlocksOnLevel(4)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082024/empire/buildings/stonequarry/stonequarry_level5-removebg-preview_rkzwxz.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(130)
+                .build();
+    }
+
+    private BuildingEntity level5() {
+        return BuildingEntity
+                .builder()
+                .level(5)
+                .unlocksOnLevel(5)
+                .buildingType(buildingType)
+                .buildingTimeSeconds(3600)
+                .buildingImage("https://res.cloudinary.com/djog8qqis/image/upload/v1670082030/empire/buildings/stonequarry/stonequarry_level7-removebg-preview_tad3dv.png")
+                .woodRequired(0)
+                .stoneRequired(1)
+                .buildingXP(2)
+                .production(150)
                 .build();
     }
 }
