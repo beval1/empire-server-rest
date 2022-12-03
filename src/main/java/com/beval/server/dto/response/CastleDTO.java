@@ -15,9 +15,9 @@ public class CastleDTO {
     private List<CastleBuildingDTO> buildings;
     private int coordinateX;
     private int coordinateY;
-    private int wood;
-    private int stone;
-    private int food;
+    private double wood;
+    private double stone;
+    private double food;
     private int armySize;
     private int citizens;
 }

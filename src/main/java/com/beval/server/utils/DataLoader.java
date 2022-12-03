@@ -1,6 +1,5 @@
 package com.beval.server.utils;
 
-import com.beval.server.model.entity.CastleArmy;
 import com.beval.server.model.entity.RoleEntity;
 import com.beval.server.model.entity.UserEntity;
 import com.beval.server.model.enums.RoleEnum;
@@ -94,8 +93,6 @@ public class DataLoader implements ApplicationRunner {
             user.setCastle(castleService.createCastle());
             deletedUser.setCastle(castleService.createCastle());
             adminUser.setCastle(castleService.createCastle());
-
-            user.getCastle().getArmy().add(null);
         }
     }
 

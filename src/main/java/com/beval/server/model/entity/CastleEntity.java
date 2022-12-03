@@ -1,12 +1,13 @@
 package com.beval.server.model.entity;
 
-import com.beval.server.dto.response.ArmyUnitDTO;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -20,9 +21,9 @@ public class CastleEntity extends BaseEntity {
     private String castleName;
     @ManyToMany
     private List<CastleBuilding> buildings;
-    private int wood;
-    private int stone;
-    private int food;
+    private double wood;
+    private double stone;
+    private double food;
     private int citizens;
     private int coordinateX;
     private int coordinateY;

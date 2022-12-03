@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ArmyUnitDTO {
+    private int id;
     private String name;
     private String unitImage;
     private ArmyUnitTypeEnum unitType;

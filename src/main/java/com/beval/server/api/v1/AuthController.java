@@ -5,7 +5,6 @@ import com.beval.server.dto.payload.SignupDTO;
 import com.beval.server.dto.response.JwtResponseDTO;
 import com.beval.server.dto.response.ResponseDTO;
 import com.beval.server.service.AuthService;
-import com.beval.server.service.CastleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

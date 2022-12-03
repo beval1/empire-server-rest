@@ -11,7 +11,7 @@ public class ShieldMaiden implements LoaderArmyUnit {
                 .name("Shield-Maiden")
                 .unitImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669979799/empire/army/shield_maden_ukdzfh.png")
                 .unitType(ArmyUnitTypeEnum.MELEE)
-                .coinPrice(320)
+                .coinPrice(32)
                 .foodConsumption(2)
                 .lootingCapacity(43)
                 .movingSpeed(34)

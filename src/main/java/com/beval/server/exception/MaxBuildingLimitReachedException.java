@@ -1,6 +1,5 @@
 package com.beval.server.exception;
 
-import com.beval.server.exception.ApiException;
 import org.springframework.http.HttpStatus;
 
 public class MaxBuildingLimitReachedException extends ApiException {

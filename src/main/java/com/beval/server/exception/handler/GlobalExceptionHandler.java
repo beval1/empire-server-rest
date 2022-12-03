@@ -1,7 +1,7 @@
 package com.beval.server.exception.handler;
 
 import com.beval.server.dto.response.ResponseDTO;
-import com.beval.server.exception.*;
+import com.beval.server.exception.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,12 +44,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler({ApiException.class, ResourceNotFoundException.class, RoleNotFoundException.class,
-            UserAlreadyExistsException.class, NotAuthorizedException.class, UserBannedException.class,
-            BuildingNotFoundException.class, CastleNotFoundException.class, MaxBuildingLimitReachedException.class,
-            CastleAlreadyExistsException.class, NotEnoughResourcesException.class, BuildingNotUnlockedException.class,
-            BuildingMaxLevelReachedException.class, InvalidPositionException.class, NoBarracksException.class
-    })
+    @ExceptionHandler({ApiException.class})
     public ResponseEntity<Object> handleCustomExceptions(ApiException ex) {
         return ResponseEntity.status(ex.getStatus())
                 .body(

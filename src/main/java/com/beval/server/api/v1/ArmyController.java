@@ -1,16 +1,17 @@
 package com.beval.server.api.v1;
 
+import com.beval.server.dto.payload.BuyArmyUnitsDTO;
 import com.beval.server.dto.response.ArmyUnitDTO;
+import com.beval.server.dto.response.CastleArmyDTO;
 import com.beval.server.dto.response.ResponseDTO;
 import com.beval.server.security.UserPrincipal;
 import com.beval.server.service.ArmyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.beval.server.config.AppConstants.API_BASE;
@@ -27,7 +28,7 @@ public class ArmyController {
     @GetMapping("/army/get-all")
     public ResponseEntity<ResponseDTO> getAllBuildings(
             @AuthenticationPrincipal UserPrincipal principal) {
-        List<ArmyUnitDTO> armyUnitDTOS = armyService.getAllForUserBarracksLevel(principal);
+        List<ArmyUnitDTO> armyUnitDTOS = armyService.getAllUnitsForUserBarracksLevel(principal);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -36,6 +37,41 @@ public class ArmyController {
                                 .builder()
                                 .message("Army fetched successfully")
                                 .content(armyUnitDTOS)
+                                .status(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+    @GetMapping("/army/get-castle")
+    public ResponseEntity<ResponseDTO> getAllUnitsForCastle(
+            @AuthenticationPrincipal UserPrincipal principal) {
+        List<CastleArmyDTO> armyUnitDTOS = armyService.getAllUnitsForCastle(principal);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTO
+                                .builder()
+                                .message("Army fetched successfully")
+                                .content(armyUnitDTOS)
+                                .status(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+
+    @PostMapping("/army/buy")
+    public ResponseEntity<ResponseDTO> buyArmy(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                               @Valid @RequestBody BuyArmyUnitsDTO buyArmyUnitsDTO) {
+        armyService.buyUnits(userPrincipal, buyArmyUnitsDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTO
+                                .builder()
+                                .message("Units bought successfully!")
+                                .content(null)
                                 .status(HttpStatus.OK.value())
                                 .build()
                 );

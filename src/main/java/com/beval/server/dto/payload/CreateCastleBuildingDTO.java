@@ -3,7 +3,6 @@ package com.beval.server.dto.payload;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 @Getter

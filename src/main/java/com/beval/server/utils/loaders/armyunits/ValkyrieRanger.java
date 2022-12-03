@@ -11,7 +11,7 @@ public class ValkyrieRanger implements LoaderArmyUnit {
                 .name("Valkyrie Ranger")
                 .unitImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669979744/empire/army/valkyrie_ranger_amyxet.png")
                 .unitType(ArmyUnitTypeEnum.RANGED)
-                .coinPrice(307)
+                .coinPrice(30)
                 .foodConsumption(2)
                 .lootingCapacity(40)
                 .movingSpeed(34)
