@@ -34,17 +34,28 @@ public class ProduceResourceTask {
         List<UserEntity> users = userRepository.findAll();
         for (UserEntity user : users) {
             CastleEntity userCastle = user.getCastle();
+
             int citizens = (int) calculateProductionPerHour(userCastle, "Dwelling");
             userCastle.setCitizens(citizens);
-            userCastle.setWood(userCastle.getWood() + calculateProductionPerMinute(userCastle, "Woodcutter"));
-            userCastle.setStone(userCastle.getStone() + calculateProductionPerMinute(userCastle, "Stone Quarry"));
+
+            double woodProductionPerMinute = calculateProductionPerMinute(userCastle, "Woodcutter");
+            userCastle.setWood(userCastle.getWood() + woodProductionPerMinute);
+            userCastle.setWoodProduction(woodProductionPerMinute * 60);
+
+            double stoneProductionPerMinute = calculateProductionPerMinute(userCastle, "Stone Quarry");
+            userCastle.setStone(userCastle.getStone() + stoneProductionPerMinute);
+            userCastle.setStoneProduction(stoneProductionPerMinute * 60);
+
             double foodProductionConsumptionMinuteDiff = calculateProductionPerMinute(userCastle, "Granary") - calculateFoodConsumptionPerMinute(userCastle);
             double newFoodTotal = userCastle.getFood() + foodProductionConsumptionMinuteDiff;
             userCastle.setFood(newFoodTotal);
+            userCastle.setFoodProduction(foodProductionConsumptionMinuteDiff * 60);
             if (newFoodTotal <= 0){
                 desertSoldiers(userCastle);
             }
+
             user.setCoins(user.getCoins() + citizens * CITIZEN_COINS_MULTIPLIER);
+            user.setMightyPoints(calculateMightPoints(userCastle));
         }
     }
 
@@ -84,6 +95,13 @@ public class ProduceResourceTask {
         return userCastle.getArmy()
                 .stream()
                 .mapToInt(castleArmy -> castleArmy.getArmyUnit().getFoodConsumption() * castleArmy.getArmyUnitCount())
+                .sum();
+    }
+
+    private int calculateMightPoints(CastleEntity userCastle) {
+        return userCastle.getArmy()
+                .stream()
+                .mapToInt(castleArmy -> castleArmy.getArmyUnit().getMightyPointsPerUnit() * castleArmy.getArmyUnitCount())
                 .sum();
     }
 

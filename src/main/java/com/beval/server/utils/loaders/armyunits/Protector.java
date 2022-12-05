@@ -12,6 +12,7 @@ public class Protector implements LoaderArmyUnit {
                 .unitImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669979812/empire/army/protector_g3sqnx.png")
                 .unitType(ArmyUnitTypeEnum.MELEE)
                 .coinPrice(35)
+                .mightyPointsPerUnit(20)
                 .foodConsumption(2)
                 .lootingCapacity(5)
                 .movingSpeed(34)

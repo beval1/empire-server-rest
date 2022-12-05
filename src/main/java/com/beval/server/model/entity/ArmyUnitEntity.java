@@ -37,4 +37,6 @@ public class ArmyUnitEntity extends BaseEntity {
     private int lootingCapacity;
     @Builder.Default
     private int barracksLevel = 1;
+    @Positive
+    private int mightyPointsPerUnit;
 }

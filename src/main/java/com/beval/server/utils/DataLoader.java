@@ -44,18 +44,18 @@ public class DataLoader implements ApplicationRunner {
             RoleEntity adminRole = roleRepository.save(RoleEntity.builder().roleName(RoleEnum.ADMIN).build());
             RoleEntity userRole = roleRepository.save(RoleEntity.builder().roleName(RoleEnum.USER).build());
 
-            UserEntity deletedUser = userRepository.save(
+            UserEntity user2 = userRepository.save(
                     UserEntity
                             .builder()
-                            .username("deleted")
+                            .username("user2")
                             .password("$2a$12$w.GNfFrtuRMFSxWq0TZsgO2M/O3jTwZ8cvdL3X/EW0XQKNitCqD6K")
-                            .enabled(false)
+                            .enabled(true)
                             .roles(Set.of(userRole))
                             .firstName(null)
                             .lastName(null)
                             .totalXP(0)
                             .email("deleted@deleted.com")
-                            .coins(2500)
+                            .coins(10000)
                             .build()
             );
 
@@ -70,7 +70,37 @@ public class DataLoader implements ApplicationRunner {
                             .lastName("Test")
                             .email("test@test.com")
                             .totalXP(0)
-                            .coins(2500)
+                            .coins(1000000)
+                            .build()
+            );
+
+            UserEntity user3 = userRepository.save(
+                    UserEntity
+                            .builder()
+                            .username("user3")
+                            .password("$2a$12$w.GNfFrtuRMFSxWq0TZsgO2M/O3jTwZ8cvdL3X/EW0XQKNitCqD6K")
+                            .enabled(true)
+                            .roles(Set.of(userRole))
+                            .firstName("Test")
+                            .lastName("Test")
+                            .email("user3@test.com")
+                            .totalXP(0)
+                            .coins(10000)
+                            .build()
+            );
+
+            UserEntity user4 = userRepository.save(
+                    UserEntity
+                            .builder()
+                            .username("user4")
+                            .password("$2a$12$w.GNfFrtuRMFSxWq0TZsgO2M/O3jTwZ8cvdL3X/EW0XQKNitCqD6K")
+                            .enabled(true)
+                            .roles(Set.of(userRole))
+                            .firstName("Test")
+                            .lastName("Test")
+                            .email("user4@test.com")
+                            .totalXP(0)
+                            .coins(10000)
                             .build()
             );
 
@@ -84,8 +114,8 @@ public class DataLoader implements ApplicationRunner {
                             .firstName("Admin")
                             .lastName("Adminov")
                             .email("admin@admin.com")
-                            .totalXP(5)
-                            .coins(2500)
+                            .totalXP(0)
+                            .coins(10000)
                             .build()
             );
 
@@ -95,10 +125,14 @@ public class DataLoader implements ApplicationRunner {
 
             castleService.createCastleForUser(user);
             castleService.createCastleForUser(adminUser);
-            castleService.createCastleForUser(deletedUser);
+            castleService.createCastleForUser(user2);
+            castleService.createCastleForUser(user3);
+            castleService.createCastleForUser(user4);
 
             user.setCastle(castleRepository.findCastleEntitiesByOwner(user));
-            deletedUser.setCastle(castleRepository.findCastleEntitiesByOwner(deletedUser));
+            user2.setCastle(castleRepository.findCastleEntitiesByOwner(user2));
+            user3.setCastle(castleRepository.findCastleEntitiesByOwner(user3));
+            user4.setCastle(castleRepository.findCastleEntitiesByOwner(user4));
             adminUser.setCastle(castleRepository.findCastleEntitiesByOwner(adminUser));
         }
     }

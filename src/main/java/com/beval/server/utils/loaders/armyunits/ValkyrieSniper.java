@@ -12,6 +12,7 @@ public class ValkyrieSniper implements LoaderArmyUnit {
                 .unitImage("https://res.cloudinary.com/djog8qqis/image/upload/v1669979774/empire/army/valkyrie_sniper_jpgodb.png")
                 .unitType(ArmyUnitTypeEnum.RANGED)
                 .coinPrice(32)
+                .mightyPointsPerUnit(30)
                 .foodConsumption(2)
                 .lootingCapacity(5)
                 .movingSpeed(34)

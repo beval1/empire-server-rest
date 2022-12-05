@@ -1,6 +1,5 @@
 package com.beval.server.dto.response;
 
-import com.beval.server.model.entity.ArmyUnitEntity;
 import lombok.*;
 
 @Getter
@@ -9,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CastleArmyDTO {
-    private ArmyUnitEntity armyUnit;
+    private ArmyUnitDTO armyUnit;
     private int armyUnitCount;
 }

@@ -22,4 +22,5 @@ public class ArmyUnitDTO {
     private int rangedDefensePower;
     private int lootingCapacity;
     private int barracksLevel;
+    private int mightyPointsPerUnit;
 }

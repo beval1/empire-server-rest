@@ -24,6 +24,9 @@ public class CastleEntity extends BaseEntity {
     private double wood;
     private double stone;
     private double food;
+    private double woodProduction;
+    private double stoneProduction;
+    private double foodProduction;
     private int citizens;
     private int coordinateX;
     private int coordinateY;
