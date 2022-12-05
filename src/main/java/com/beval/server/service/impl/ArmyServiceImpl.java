@@ -1,13 +1,14 @@
 package com.beval.server.service.impl;
 
+import com.beval.server.config.AppConstants;
+import com.beval.server.dto.payload.AttackDTO;
 import com.beval.server.dto.payload.BuyArmyUnitsDTO;
+import com.beval.server.dto.payload.WaveDTO;
 import com.beval.server.dto.response.ArmyUnitDTO;
 import com.beval.server.dto.response.CastleArmyDTO;
 import com.beval.server.exception.*;
-import com.beval.server.model.entity.ArmyUnitEntity;
-import com.beval.server.model.entity.CastleArmy;
-import com.beval.server.model.entity.CastleEntity;
-import com.beval.server.model.entity.UserEntity;
+import com.beval.server.model.entity.*;
+import com.beval.server.model.enums.ArmyUnitTypeEnum;
 import com.beval.server.repository.ArmyUnitRepository;
 import com.beval.server.repository.CastleArmyRepository;
 import com.beval.server.repository.UserRepository;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.beval.server.config.AppConstants.*;
 
 @Service
 public class ArmyServiceImpl implements ArmyService  {
@@ -80,12 +83,6 @@ public class ArmyServiceImpl implements ArmyService  {
             throw new NotEnoughResourcesException(HttpStatus.BAD_REQUEST, "Not enough coins!");
         }
 
-        //check if food is enough
-//        double foodProductionPerHour = ProduceResourceTask.calculateProductionPerHour(castleEntity, "Granary");
-//        if (armyUnitEntity.getFoodConsumption() * buyArmyUnitsDTO.getCount() > foodProductionPerHour){
-//            throw new NotEnoughResourcesException(HttpStatus.BAD_REQUEST, "Not enough food production!");
-//        }
-
         //check barracks level
         int userBarracksLevel = userEntity.getCastle().getBuildings()
                 .stream()
@@ -116,4 +113,58 @@ public class ArmyServiceImpl implements ArmyService  {
 
         userEntity.setCoins(userEntity.getCoins() - totalCost);
     }
+
+    @Transactional
+    @Override
+    public void launchAttack(UserPrincipal userPrincipal, String victim, AttackDTO attackDTO) {
+        UserEntity userEntity = userRepository.findByUsernameOrEmail(userPrincipal.getUsername(),
+                userPrincipal.getUsername()).orElseThrow(NotAuthorizedException::new);
+        UserEntity victimEntity = userRepository.findByUsernameOrEmail(victim, victim)
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "No victim entity found!"));
+
+        CastleEntity victimCastle = victimEntity.getCastle();
+        List<CastleArmy> castleArmies = victimCastle.getArmy().stream()
+                .filter(castleArmy -> castleArmy.getArmyUnit().getUnitType() == ArmyUnitTypeEnum.DEFENSE).toList();
+        CastleDefense castleDefense = victimCastle.getCastleDefense();
+
+//        if (castleDefense.getFrontSoldierMeleePowerPercent() + castleDefense.getLeftFlankSoldierMeleePowerPercent() +
+//        castleDefense.getRightFlankSoldiersPercent() > 100){
+//            throw new ApiException("")
+//        }
+
+        //TODO: compensate for rounding
+        int frontSoldierCount = (int) Math.round(CASTLE_WALL_LIMIT * castleDefense.getFrontSoldiersPercent() / 100.0);
+        int leftFlankSoldierCount = (int) Math.round(CASTLE_WALL_LIMIT * castleDefense.getLeftFlankSoldiersPercent() / 100.0);
+        int rightFlankSoldierCount = (int) Math.round(CASTLE_WALL_LIMIT * castleDefense.getRightFlankSoldiersPercent() / 100.0);
+
+        List<WaveDTO> waves = attackDTO.getWaves();
+        for (WaveDTO wave : waves){
+            int totalAttackFrontMeleePower = 0;
+            int totalAttackFrontRangedPower = 0;
+            int totalAttackLeftFlankMeleePower = 0;
+            int totalAttackLeftFlankRangedPower = 0;
+            int totalAttackRightFlankMeleePower = 0;
+            int totalAttackRightFlankRangedPower = 0;
+            for (int i = 0; i < ATTACK_FRONT_MAX_SLOTS; i++) {
+                CastleArmyDTO armyType = wave.getFrontArmy().get(i);
+                totalAttackFrontMeleePower += armyType.getArmyUnit().getMeleeAttackPower() * armyType.getArmyUnitCount();
+                totalAttackFrontRangedPower += armyType.getArmyUnit().getRangedAttackPower() * armyType.getArmyUnitCount();
+            }
+            for (int i = 0; i < ATTACK_FLANK_MAX_SLOTS; i++) {
+                CastleArmyDTO armyType = wave.getLeftFlankArmy().get(i);
+                totalAttackLeftFlankMeleePower += armyType.getArmyUnit().getMeleeAttackPower() * armyType.getArmyUnitCount();
+                totalAttackLeftFlankRangedPower += armyType.getArmyUnit().getRangedAttackPower() * armyType.getArmyUnitCount();
+            }
+            for (int i = 0; i < ATTACK_FLANK_MAX_SLOTS; i++) {
+                CastleArmyDTO armyType = wave.getRightFlankArmy().get(i);
+                totalAttackRightFlankMeleePower += armyType.getArmyUnit().getMeleeAttackPower() * armyType.getArmyUnitCount();
+                totalAttackRightFlankRangedPower += armyType.getArmyUnit().getRangedAttackPower() * armyType.getArmyUnitCount();
+            }
+
+
+
+        }
+    }
+
+
 }

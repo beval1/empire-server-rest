@@ -34,4 +34,6 @@ public class CastleEntity extends BaseEntity {
     private int quadrant;
     @OneToMany
     private List<CastleArmy> army;
+    @OneToOne
+    private CastleDefense castleDefense;
 }

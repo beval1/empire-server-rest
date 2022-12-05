@@ -26,6 +26,13 @@ public final class AppConstants {
     public static final int CASTLE_STARTING_WOOD = 10000;
     public static final int CASTLE_STARTING_STONE = 10000;
 
+    public static final int CASTLE_WALL_LIMIT = 600;
+    public static final int ATTACK_FRONT_LIMIT = 200;
+    public static final int ATTACK_FRONT_MAX_SLOTS = 2;
+    public static final int ATTACK_FLANK_LIMIT = 100;
+    public static final int ATTACK_FLANK_MAX_SLOTS = 2;
+
+
     public static final Map<Integer, Integer> userLevelsXP = Map.ofEntries(
             entry(1, 0),
             entry(2, 5),
