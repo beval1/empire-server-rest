@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -46,5 +47,9 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 
+    @OneToMany
+    private List<PlayerMessageEntity> playerMessages;
 
+    @OneToMany
+    private List<BattleReportEntity> battleReports;
 }
