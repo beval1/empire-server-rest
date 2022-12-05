@@ -1,14 +1,14 @@
 package com.beval.server.service.impl;
 
+import com.beval.server.dto.payload.AttackDTO;
 import com.beval.server.dto.payload.BuyArmyUnitsDTO;
 import com.beval.server.dto.response.ArmyUnitDTO;
 import com.beval.server.dto.response.CastleArmyDTO;
 import com.beval.server.exception.*;
-import com.beval.server.model.entity.ArmyUnitEntity;
-import com.beval.server.model.entity.CastleArmy;
-import com.beval.server.model.entity.CastleEntity;
-import com.beval.server.model.entity.UserEntity;
+import com.beval.server.model.entity.*;
+import com.beval.server.model.enums.ArmyUnitTypeEnum;
 import com.beval.server.repository.ArmyUnitRepository;
+import com.beval.server.repository.BattleReportRepository;
 import com.beval.server.repository.CastleArmyRepository;
 import com.beval.server.repository.UserRepository;
 import com.beval.server.security.UserPrincipal;
@@ -27,12 +27,14 @@ public class ArmyServiceImpl implements ArmyService  {
     private final ArmyUnitRepository armyUnitRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final BattleReportRepository battleReportRepository;
 
-    public ArmyServiceImpl(CastleArmyRepository castleArmyRepository, ArmyUnitRepository armyUnitRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public ArmyServiceImpl(CastleArmyRepository castleArmyRepository, ArmyUnitRepository armyUnitRepository, UserRepository userRepository, ModelMapper modelMapper, BattleReportRepository battleReportRepository) {
         this.castleArmyRepository = castleArmyRepository;
         this.armyUnitRepository = armyUnitRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.battleReportRepository = battleReportRepository;
     }
 
     @Transactional
@@ -80,12 +82,6 @@ public class ArmyServiceImpl implements ArmyService  {
             throw new NotEnoughResourcesException(HttpStatus.BAD_REQUEST, "Not enough coins!");
         }
 
-        //check if food is enough
-//        double foodProductionPerHour = ProduceResourceTask.calculateProductionPerHour(castleEntity, "Granary");
-//        if (armyUnitEntity.getFoodConsumption() * buyArmyUnitsDTO.getCount() > foodProductionPerHour){
-//            throw new NotEnoughResourcesException(HttpStatus.BAD_REQUEST, "Not enough food production!");
-//        }
-
         //check barracks level
         int userBarracksLevel = userEntity.getCastle().getBuildings()
                 .stream()
@@ -115,5 +111,60 @@ public class ArmyServiceImpl implements ArmyService  {
         }
 
         userEntity.setCoins(userEntity.getCoins() - totalCost);
+    }
+
+    @Override
+    public void launchAttack(UserPrincipal userPrincipal, String victimUsername, AttackDTO attackDTO) {
+        UserEntity attacker = userRepository.findByUsernameOrEmail(userPrincipal.getUsername(),
+                userPrincipal.getUsername()).orElseThrow(NotAuthorizedException::new);
+        UserEntity defender = userRepository.findByUsernameOrEmail(victimUsername, victimUsername)
+                .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST, "Can't find victim"));
+
+        List<CastleArmy> defenseUnits = defender.getCastle().getArmy().stream()
+                .filter(castleArmy -> castleArmy.getArmyUnit().getUnitType() == ArmyUnitTypeEnum.DEFENSE).toList();
+
+        int totalDefensePower = defenseUnits.stream().mapToInt(unit -> (unit.getArmyUnit().getMeleeDefensePower() +
+                unit.getArmyUnit().getRangedDefensePower()) * unit.getArmyUnitCount()).sum();
+        int totalAttackPower = attackDTO.getArmyList().stream().mapToInt(unit -> (unit.getArmyUnit().getMeleeAttackPower() +
+                unit.getArmyUnit().getRangedAttackPower()) * unit.getArmyUnitCount()).sum();
+
+        int combatPowerResult = totalDefensePower - totalAttackPower;
+        //choose winner
+        UserEntity winner = combatPowerResult < 0 ? attacker : defender;
+        //calculate victims
+        if (winner != defender) {
+            ArmyKilling:
+            for (CastleArmy defenseUnit : defenseUnits) {
+                for (int j = 0; j < defenseUnit.getArmyUnitCount(); j++) {
+                    totalDefensePower -= defenseUnit.getArmyUnit().getMeleeDefensePower() +
+                            defenseUnit.getArmyUnit().getRangedDefensePower();
+                    defenseUnit.setArmyUnitCount(defenseUnit.getArmyUnitCount()-1);
+                    if (totalDefensePower <= 0){
+                        break ArmyKilling;
+                    }
+                }
+            }
+        } else {
+            ArmyKilling:
+            for (CastleArmyDTO attack : attackDTO.getArmyList()) {
+                for (int j = 0; j < attack.getArmyUnitCount(); j++) {
+                    totalAttackPower -= attack.getArmyUnit().getMeleeAttackPower() +
+                            attack.getArmyUnit().getRangedAttackPower();
+                    attack.setArmyUnitCount(attack.getArmyUnitCount()-1);
+                    if (totalAttackPower <= 0){
+                        break ArmyKilling;
+                    }
+                }
+            }
+        }
+        //generate report for both sides
+        BattleReportEntity battleReportEntity = battleReportRepository.save(BattleReportEntity
+                .builder()
+                        .attacker(attacker)
+                        .attackingArmy()
+                        .defender(defender)
+                        .attackingArmyVictims()
+                .build());
+        attacker.getBattleReports().add(battleReportEntity)
     }
 }

@@ -1,5 +1,6 @@
 package com.beval.server.api.v1;
 
+import com.beval.server.dto.payload.AttackDTO;
 import com.beval.server.dto.payload.BuyArmyUnitsDTO;
 import com.beval.server.dto.response.ArmyUnitDTO;
 import com.beval.server.dto.response.CastleArmyDTO;
@@ -71,6 +72,24 @@ public class ArmyController {
                         ResponseDTO
                                 .builder()
                                 .message("Units bought successfully!")
+                                .content(null)
+                                .status(HttpStatus.OK.value())
+                                .build()
+                );
+    }
+
+    @PostMapping("/attack/{victimUsername}")
+    public ResponseEntity<ResponseDTO> launchAttack(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                                                    @PathVariable String victimUsername,
+                                                    @Valid @RequestBody AttackDTO attackDTO) {
+        armyService.launchAttack(userPrincipal, victimUsername, attackDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        ResponseDTO
+                                .builder()
+                                .message("Attack launched successfully!")
                                 .content(null)
                                 .status(HttpStatus.OK.value())
                                 .build()
