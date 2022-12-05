@@ -3,6 +3,7 @@ package com.beval.server.utils;
 import com.beval.server.model.entity.RoleEntity;
 import com.beval.server.model.entity.UserEntity;
 import com.beval.server.model.enums.RoleEnum;
+import com.beval.server.repository.CastleRepository;
 import com.beval.server.repository.RoleRepository;
 import com.beval.server.repository.UserRepository;
 import com.beval.server.service.CastleService;
@@ -23,14 +24,16 @@ public class DataLoader implements ApplicationRunner {
     private final RoleRepository roleRepository;
     private final BuildingLoader buildingLoader;
     private final ArmyUnitLoader armyUnitLoader;
+    private final CastleRepository castleRepository;
     private final CastleService castleService;
 
     public DataLoader(UserRepository userRepository, RoleRepository roleRepository, BuildingLoader buildingLoader,
-                      ArmyUnitLoader armyUnitLoader, CastleService castleService) {
+                      ArmyUnitLoader armyUnitLoader, CastleRepository castleRepository, CastleService castleService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.buildingLoader = buildingLoader;
         this.armyUnitLoader = armyUnitLoader;
+        this.castleRepository = castleRepository;
         this.castleService = castleService;
     }
 
@@ -90,9 +93,13 @@ public class DataLoader implements ApplicationRunner {
             buildingLoader.loadAll();
             armyUnitLoader.loadAll();
 
-            user.setCastle(castleService.createCastle());
-            deletedUser.setCastle(castleService.createCastle());
-            adminUser.setCastle(castleService.createCastle());
+            castleService.createCastleForUser(user);
+            castleService.createCastleForUser(adminUser);
+            castleService.createCastleForUser(deletedUser);
+
+            user.setCastle(castleRepository.findCastleEntitiesByOwner(user));
+            deletedUser.setCastle(castleRepository.findCastleEntitiesByOwner(deletedUser));
+            adminUser.setCastle(castleRepository.findCastleEntitiesByOwner(adminUser));
         }
     }
 

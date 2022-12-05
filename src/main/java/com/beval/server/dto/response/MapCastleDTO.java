@@ -2,22 +2,18 @@ package com.beval.server.dto.response;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CastleDTO {
+public class MapCastleDTO {
     private String castleName;
-    private List<CastleBuildingDTO> buildings;
+    private String ownerUsername;
+    private int ownerLevel;
+    private int ownerMightyPoints;
     private int coordinateX;
     private int coordinateY;
-    private double wood;
-    private double stone;
-    private double food;
-    private int armySize;
-    private int citizens;
     private int quadrant;
+    private String castleImage;
 }

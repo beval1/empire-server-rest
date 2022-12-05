@@ -39,6 +39,37 @@ public final class AppConstants {
             entry(10, 250)
     );
 
+    public static final Map<Integer, String> keepMapImages = Map.ofEntries(
+            entry(1, "https://res.cloudinary.com/djog8qqis/image/upload/v1670204661/empire/map/keep/map_keep_level1-removebg-preview_w2j5vc.png"),
+            entry(2, "https://res.cloudinary.com/djog8qqis/image/upload/v1670204669/empire/map/keep/map_keep_level2-removebg-preview_zjdtle.png"),
+            entry(3, "https://res.cloudinary.com/djog8qqis/image/upload/v1670204677/empire/map/keep/map_keep_level3-removebg-preview_ajbut9.png"),
+            entry(4, "https://res.cloudinary.com/djog8qqis/image/upload/v1670204684/empire/map/keep/map_keep_level4-removebg-preview_bc8tkj.png")
+    );
+
+    //x, y, quadrant
+    public static final List<List<Integer>> mapCastleValidPositions = List.of(
+            List.of(3, 5, 1),
+            List.of(9, 15, 1),
+            List.of(5, 7, 1),
+            List.of(22, 12, 1),
+            List.of(11, 5, 1),
+            List.of(20, 10, 1),
+            List.of(10, 10, 1),
+            List.of(20, 20, 1),
+            List.of(15, 3, 1),
+            List.of(9, 15, 1),
+            List.of(14, 12, 1),
+            List.of(3, 15, 1),
+            List.of(12, 22, 1),
+            List.of(17, 10, 1),
+            List.of(5, 2, 1),
+            List.of(13, 2, 1),
+            List.of(13, 4, 1),
+            List.of(4, 13, 1),
+            List.of(7, 8, 1),
+            List.of(21, 8, 1)
+    );
+
     public static final int[][] validGridBuildingPosition = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

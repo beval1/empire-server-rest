@@ -2,11 +2,9 @@ package com.beval.server.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
@@ -17,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name="castles")
 public class CastleEntity extends BaseEntity {
+    @OneToOne
+    private UserEntity owner;
     @NotBlank
     private String castleName;
     @ManyToMany
@@ -27,6 +27,8 @@ public class CastleEntity extends BaseEntity {
     private int citizens;
     private int coordinateX;
     private int coordinateY;
+    @Positive
+    private int quadrant;
     @OneToMany
     private List<CastleArmy> army;
 }

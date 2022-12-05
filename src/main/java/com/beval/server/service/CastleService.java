@@ -1,13 +1,16 @@
 package com.beval.server.service;
 
 import com.beval.server.dto.response.CastleDTO;
-import com.beval.server.model.entity.CastleEntity;
+import com.beval.server.dto.response.EnemyCastleDTO;
+import com.beval.server.dto.response.MapCastleDTO;
 import com.beval.server.model.entity.UserEntity;
 import com.beval.server.security.UserPrincipal;
 
-public interface CastleService {
-    CastleDTO getCastle(UserPrincipal userPrincipal, String castleOwnerUsername);
-    CastleEntity createCastle();
-    void createCastleForUser(UserEntity userEntity);
+import java.util.List;
 
+public interface CastleService {
+    CastleDTO getCastle(UserPrincipal userPrincipal);
+    void createCastleForUser(UserEntity userEntity);
+    List<MapCastleDTO> getAllCastlesForQuadrant(UserPrincipal userPrincipal, int quadrant);
+    EnemyCastleDTO getEnemyCastle(String enemyUsername);
 }
